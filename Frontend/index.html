@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroChain - Agricultural Marketplace</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <i class="fas fa-seedling"></i>
+                <span>AgroChain</span>
+            </a>
+            <nav class="nav-menu">
+                <a href="#features">Features</a>
+                <a href="#marketplace">Marketplace</a>
+                <a href="#about">About</a>
+            </nav>
+            <div class="nav-actions" id="navAuthActions">
+                <a href="login.html" class="btn btn-outline">Sign In</a>
+                <a href="register.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <span class="badge"><i class="fas fa-leaf"></i> Transparent Agricultural Trade</span>
+            <h1>Direct Marketplace Connecting Farmers & Buyers</h1>
+            <p>Empowering farmers to list produce directly, eliminate intermediaries, and trade transparently with
+                buyers across verified transactions backed by MongoDB.</p>
+            <div class="hero-buttons">
+                <a href="register.html" class="btn btn-primary btn-lg"><i class="fas fa-user-plus"></i> Join
+                    AgroChain</a>
+                <a href="login.html" class="btn btn-secondary btn-lg"><i class="fas fa-sign-in-alt"></i> Sign In to
+                    Dashboard</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-pill">
+                    <strong id="statActiveCrops">--</strong>
+                    <span>Available Crops</span>
+                </div>
+                <div class="stat-pill">
+                    <strong>100%</strong>
+                    <span>Direct Trade</span>
+                </div>
+                <div class="stat-pill">
+                    <strong>Real-Time</strong>
+                    <span>Inventory</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <h2>Why Choose AgroChain?</h2>
+            <p>A streamlined, reliable agricultural marketplace built for real farmers and commercial buyers.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-tractor"></i></div>
+                <h3>Farmer Dashboard</h3>
+                <p>Farmers can add, update, manage stock levels, and track transactions directly in real time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-shopping-basket"></i></div>
+                <h3>Buyer Marketplace</h3>
+                <p>Browse fresh crops, search by location or category, and purchase directly with real-time stock
+                    deduction.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Secure Transactions</h3>
+                <p>Role-based authentication with JWT and bcrypt ensures every transaction is safe and accountable.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-database"></i></div>
+                <h3>MongoDB Persistence</h3>
+                <p>Full database persistence ensures crops, user data, and transactions are securely stored.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Marketplace Preview -->
+    <section class="marketplace-preview-section" id="marketplace">
+        <div class="section-header">
+            <h2>Live Marketplace Preview</h2>
+            <p>Explore crops currently available from verified farmers.</p>
+        </div>
+        <div class="crops-grid" id="previewCropsGrid">
+            <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading available crops...</div>
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="login.html" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Sign In to Purchase
+                Crops</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="about">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <i class="fas fa-seedling"></i>
+                    <span>AgroChain</span>
+                </div>
+                <p>A Full-Stack Agricultural Marketplace built with Node.js, Express, MongoDB, and Vanilla JavaScript.
+                </p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="login.html">Sign In</a>
+                <a href="register.html">Register</a>
+                <a href="#features">Features</a>
+                <a href="#marketplace">Marketplace</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 AgroChain. Clean architecture and real persistence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

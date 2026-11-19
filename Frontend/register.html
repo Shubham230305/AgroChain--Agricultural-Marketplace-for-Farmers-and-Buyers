@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroChain - Create Account</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="floating-icon" style="top: 15%; left: 15%;"><i class="fas fa-seedling"></i></div>
+        <div class="floating-icon" style="top: 25%; left: 75%;"><i class="fas fa-leaf"></i></div>
+        <div class="floating-icon" style="top: 65%; left: 25%;"><i class="fas fa-tractor"></i></div>
+        <div class="floating-icon" style="top: 75%; left: 65%;"><i class="fas fa-wheat-awn"></i></div>
+    </div>
+
+    <div class="login-container" style="max-width: 520px;">
+        <div class="login-card">
+            <div class="logo-section">
+                <a href="index.html" class="logo-link">
+                    <div class="logo">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h1>AgroChain</h1>
+                </a>
+                <p class="subtitle">Join the Agricultural Marketplace</p>
+            </div>
+
+            <div id="registerAlert" class="alert-box" style="display: none;"></div>
+
+            <form id="registerForm" class="login-form" novalidate>
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <div class="input-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="phone" name="phone" placeholder="9876543210">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">I am a *</label>
+                    <div class="role-selector">
+                        <label class="role-card">
+                            <input type="radio" name="role" value="farmer" checked>
+                            <strong><i class="fas fa-tractor"></i> Farmer</strong>
+                            <p>Sell Produce Direct</p>
+                        </label>
+                        <label class="role-card">
+                            <input type="radio" name="role" value="buyer">
+                            <strong><i class="fas fa-shopping-basket"></i> Buyer</strong>
+                            <p>Buy Fresh Produce</p>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location / City</label>
+                    <div class="input-group">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" id="location" name="location" placeholder="Pune, Maharashtra">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password (min. 6 characters) *</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" placeholder="Create password" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password *</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn" id="registerBtn">
+                    <i class="fas fa-user-plus"></i>
+                    <span id="registerBtnText">Create Account</span>
+                </button>
+            </form>
+
+            <div class="additional-options">
+                <p>Already have an account? <a href="login.html" class="signup-link">Sign In</a></p>
+                <p style="margin-top: 10px;"><a href="index.html" class="home-link"><i class="fas fa-arrow-left"></i> Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/register.js"></script>
+</body>
+</html>

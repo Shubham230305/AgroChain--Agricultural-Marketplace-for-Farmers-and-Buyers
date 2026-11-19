@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroChain - Farmer Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/farmer-dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Backdrop Overlay on Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-seedling"></i>
+                    <span>AgroChain</span>
+                </div>
+                <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="user-profile-badge">
+                <div class="avatar"><i class="fas fa-user-circle"></i></div>
+                <div class="user-meta">
+                    <h4 id="sidebarUserName">Farmer</h4>
+                    <span class="role-tag">Farmer Account</span>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#overview" class="active" onclick="switchTab('overview')"><i class="fas fa-chart-pie"></i>
+                        <span>Overview</span></a></li>
+                <li><a href="#my-crops" onclick="switchTab('my-crops')"><i class="fas fa-seedling"></i> <span>My
+                            Crops</span></a></li>
+                <li><a href="#add-crop" onclick="openAddCropModal()"><i class="fas fa-plus-circle"></i> <span>Add
+                            Crop</span></a></li>
+                <li><a href="#transactions" onclick="switchTab('transactions')"><i class="fas fa-receipt"></i>
+                        <span>Sales History</span></a></li>
+                <li><a href="buyer-dashboard.html"><i class="fas fa-store"></i> <span>View Marketplace</span></a></li>
+                <li><a href="#profile" onclick="openProfileModal()"><i class="fas fa-id-card"></i>
+                        <span>Profile</span></a></li>
+                <li class="logout-link"><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span></a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-nav">
+                <div class="top-nav-left">
+                    <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn"
+                        aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title">
+                        <h2 id="pageHeading">Farmer Dashboard</h2>
+                        <p id="pageSubheading">Manage your crops and track direct sales</p>
+                    </div>
+                </div>
+                <div class="top-nav-actions">
+                    <button class="btn btn-primary" onclick="openAddCropModal()">
+                        <i class="fas fa-plus"></i> List New Crop
+                    </button>
+                    <button class="btn btn-outline" onclick="loadDashboard()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Overview Section -->
+                <section id="overviewSection" class="dashboard-tab">
+                    <!-- Statistics Grid (Real MongoDB Data) -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon icon-green"><i class="fas fa-boxes"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Total Listed Crops</span>
+                                <h3 id="statTotalCrops">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon icon-blue"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Available Crops</span>
+                                <h3 id="statAvailableCrops">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon icon-orange"><i class="fas fa-shopping-cart"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Completed Sales</span>
+                                <h3 id="statTotalSales">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon icon-purple"><i class="fas fa-rupee-sign"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Total Revenue</span>
+                                <h3 id="statTotalRevenue">₹0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Sales Table -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-receipt"></i> Recent Direct Sales</h3>
+                            <button class="btn btn-sm btn-outline" onclick="switchTab('transactions')">View All</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Crop</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total (₹)</th>
+                                        <th>Buyer</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentSalesTableBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center">Loading sales data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Crops Section -->
+                <section id="myCropsSection" class="dashboard-tab" style="display: none;">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-seedling"></i> My Listed Produce</h3>
+                            <button class="btn btn-primary btn-sm" onclick="openAddCropModal()">
+                                <i class="fas fa-plus"></i> Add Crop
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Crop Name</th>
+                                        <th>Available Qty</th>
+                                        <th>Price / Unit</th>
+                                        <th>Location</th>
+                                        <th>Quality</th>
+                                        <th>Organic</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myCropsTableBody">
+                                    <tr>
+                                        <td colspan="8" class="text-center">Loading your crops...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transactions Section -->
+                <section id="transactionsSection" class="dashboard-tab" style="display: none;">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-file-invoice-dollar"></i> All Sales Transactions</h3>
+                            <span class="badge" id="salesCountBadge">0 Sales</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction ID</th>
+                                        <th>Date</th>
+                                        <th>Crop</th>
+                                        <th>Qty Sold</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Amount</th>
+                                        <th>Buyer Name</th>
+                                        <th>Buyer Contact</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="allSalesTableBody">
+                                    <tr>
+                                        <td colspan="9" class="text-center">Loading transactions...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Crop Modal -->
+    <div id="cropModal" class="modal-backdrop" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="cropModalTitle">List Crop for Sale</h3>
+                <button type="button" class="close-btn" onclick="closeCropModal()">&times;</button>
+            </div>
+            <form id="cropForm">
+                <input type="hidden" id="cropId" name="cropId">
+                <div class="form-row">
+                    <div class="form-group flex-2">
+                        <label for="modalCropName">Crop Name *</label>
+                        <input type="text" id="modalCropName" required placeholder="e.g. Wheat, Basmati Rice, Tomato">
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="modalQuality">Quality Grade</label>
+                        <select id="modalQuality">
+                            <option value="premium">Premium</option>
+                            <option value="standard" selected>Standard</option>
+                            <option value="economy">Economy</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="modalQuantity">Quantity *</label>
+                        <input type="number" id="modalQuantity" required min="1" step="any" placeholder="e.g. 500">
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="modalUnit">Unit *</label>
+                        <select id="modalUnit" required>
+                            <option value="kg">kg</option>
+                            <option value="quintal">quintal</option>
+                            <option value="ton">ton</option>
+                            <option value="piece">piece</option>
+                            <option value="dozen">dozen</option>
+                            <option value="box">box</option>
+                        </select>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="modalPrice">Price per Unit (₹) *</label>
+                        <input type="number" id="modalPrice" required min="1" step="0.01" placeholder="e.g. 35">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="modalLocation">Farm Location *</label>
+                    <input type="text" id="modalLocation" required placeholder="e.g. Nashik, Maharashtra">
+                </div>
+
+                <div class="form-group">
+                    <label for="modalDescription">Description (Optional)</label>
+                    <textarea id="modalDescription" rows="2"
+                        placeholder="Harvesting details, freshness, packing..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label class="checkbox-label"
+                            style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 10px;">
+                            <input type="checkbox" id="modalOrganic">
+                            <span>Certified Organic Produce</span>
+                        </label>
+                    </div>
+                    <div class="form-group flex-1" id="statusGroup" style="display: none;">
+                        <label for="modalStatus">Listing Status</label>
+                        <select id="modalStatus">
+                            <option value="available">Available</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="sold">Sold Out</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeCropModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveCropBtn">Save Listing</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal-backdrop" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>My Farmer Profile</h3>
+                <button type="button" class="close-btn" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="profileName">Full Name</label>
+                    <input type="text" id="profileName" required>
+                </div>
+                <div class="form-group">
+                    <label for="profileEmail">Email Address (Read-only)</label>
+                    <input type="email" id="profileEmail" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="profilePhone">Phone Number</label>
+                    <input type="tel" id="profilePhone">
+                </div>
+                <div class="form-group">
+                    <label for="profileLocation">Primary Farm Location</label>
+                    <input type="text" id="profileLocation" placeholder="Village, District, State">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeProfileModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/farmer-dashboard.js"></script>
+</body>
+
+</html>

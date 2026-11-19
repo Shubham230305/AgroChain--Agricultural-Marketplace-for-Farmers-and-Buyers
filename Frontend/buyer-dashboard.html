@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroChain - Buyer Dashboard & Marketplace</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/buyer-dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Backdrop Overlay on Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-seedling"></i>
+                    <span>AgroChain</span>
+                </div>
+                <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="user-profile-badge">
+                <div class="avatar"><i class="fas fa-shopping-basket"></i></div>
+                <div class="user-meta">
+                    <h4 id="sidebarUserName">Buyer</h4>
+                    <span class="role-tag">Buyer Account</span>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#marketplace" class="active" onclick="switchTab('marketplace')"><i
+                            class="fas fa-store"></i> <span>Marketplace</span></a></li>
+                <li><a href="#overview" onclick="switchTab('overview')"><i class="fas fa-chart-pie"></i>
+                        <span>Overview</span></a></li>
+                <li><a href="#purchases" onclick="switchTab('purchases')"><i class="fas fa-shopping-bag"></i> <span>My
+                            Purchases</span></a></li>
+                <li><a href="#profile" onclick="openProfileModal()"><i class="fas fa-id-card"></i>
+                        <span>Profile</span></a></li>
+                <li class="logout-link"><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span></a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-nav">
+                <div class="top-nav-left">
+                    <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn"
+                        aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title">
+                        <h2 id="pageHeading">Agricultural Marketplace</h2>
+                        <p id="pageSubheading">Direct fresh produce available from verified farmers</p>
+                    </div>
+                </div>
+                <div class="top-nav-actions">
+                    <button class="btn btn-outline" onclick="refreshMarketplace()">
+                        <i class="fas fa-sync-alt"></i> Refresh Crops
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Marketplace Tab -->
+                <section id="marketplaceSection" class="dashboard-tab">
+                    <!-- Search and Filters Bar -->
+                    <div class="search-filter-card">
+                        <div class="search-input-wrap">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="cropSearchInput"
+                                placeholder="Search by crop name, location, or description..." oninput="handleSearch()">
+                        </div>
+                        <div class="filters-row">
+                            <select id="filterOrganic" onchange="handleFilter()">
+                                <option value="">All Cultivation</option>
+                                <option value="true">Organic Only</option>
+                                <option value="false">Standard Only</option>
+                            </select>
+                            <select id="filterQuality" onchange="handleFilter()">
+                                <option value="">All Grades</option>
+                                <option value="premium">Premium</option>
+                                <option value="standard">Standard</option>
+                                <option value="economy">Economy</option>
+                            </select>
+                            <button class="btn btn-sm btn-outline" onclick="resetFilters()">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Crops Grid -->
+                    <div class="crops-grid" id="marketplaceCropsGrid">
+                        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading marketplace crops...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Overview Tab -->
+                <section id="overviewSection" class="dashboard-tab" style="display: none;">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon icon-blue"><i class="fas fa-shopping-bag"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Total Orders</span>
+                                <h3 id="statTotalPurchases">0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon icon-purple"><i class="fas fa-rupee-sign"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Total Spent</span>
+                                <h3 id="statTotalSpent">₹0</h3>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon icon-green"><i class="fas fa-store"></i></div>
+                            <div class="stat-data">
+                                <span class="stat-label">Marketplace Crops</span>
+                                <h3 id="statAvailableCrops">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Purchases Panel -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-history"></i> Recent Purchases</h3>
+                            <button class="btn btn-sm btn-outline" onclick="switchTab('purchases')">View All</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Crop</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total (₹)</th>
+                                        <th>Farmer</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentPurchasesTableBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center">Loading recent orders...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Purchases History Tab -->
+                <section id="purchasesSection" class="dashboard-tab" style="display: none;">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-file-invoice-dollar"></i> My Purchase History</h3>
+                            <span class="badge" id="purchasesCountBadge">0 Orders</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Date</th>
+                                        <th>Crop</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Paid</th>
+                                        <th>Farmer Name</th>
+                                        <th>Farmer Contact</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="allPurchasesTableBody">
+                                    <tr>
+                                        <td colspan="9" class="text-center">Loading order history...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="buyModal" class="modal-backdrop" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Purchase Crop Produce</h3>
+                <button type="button" class="close-btn" onclick="closeBuyModal()">&times;</button>
+            </div>
+            <form id="buyForm">
+                <input type="hidden" id="buyCropId">
+                <div class="buy-summary-card" id="buyCropSummary">
+                    <h4 id="buyCropName">Crop Name</h4>
+                    <p id="buyCropFarmer">Farmer: --</p>
+                    <p id="buyCropLocation"><i class="fas fa-map-marker-alt"></i> Location: --</p>
+                    <div class="price-stock-row">
+                        <div>Price: <strong id="buyCropPrice">₹0</strong> / <span id="buyCropUnit">kg</span></div>
+                        <div>Available: <strong id="buyCropMaxQty">0</strong> <span id="buyCropUnit2">kg</span></div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="buyQuantity">Quantity to Purchase (<span id="buyUnitLabel">kg</span>) *</label>
+                    <input type="number" id="buyQuantity" min="1" step="any" required placeholder="Enter quantity"
+                        oninput="calculateBuyTotal()">
+                </div>
+
+                <div class="form-group">
+                    <label for="buyPaymentMethod">Transaction Settlement Method</label>
+                    <select id="buyPaymentMethod">
+                        <option value="marketplace_direct" selected>Direct Marketplace Settlement</option>
+                        <option value="bank_transfer">Bank Transfer / UPI</option>
+                        <option value="cash_on_delivery">Cash on Delivery</option>
+                    </select>
+                </div>
+
+                <!-- Total Calculation Box -->
+                <div class="total-calc-box">
+                    <span>Total Amount:</span>
+                    <strong id="buyTotalAmount">₹0</strong>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeBuyModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="confirmBuyBtn">
+                        <i class="fas fa-check-circle"></i> Confirm Purchase
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal-backdrop" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>My Buyer Profile</h3>
+                <button type="button" class="close-btn" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="profileName">Full Name</label>
+                    <input type="text" id="profileName" required>
+                </div>
+                <div class="form-group">
+                    <label for="profileEmail">Email Address (Read-only)</label>
+                    <input type="email" id="profileEmail" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="profilePhone">Phone Number</label>
+                    <input type="tel" id="profilePhone">
+                </div>
+                <div class="form-group">
+                    <label for="profileLocation">Delivery / Business Location</label>
+                    <input type="text" id="profileLocation" placeholder="City, State">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeProfileModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/buyer-dashboard.js"></script>
+</body>
+
+</html>
